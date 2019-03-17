@@ -1,5 +1,6 @@
 package LAB_1;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -7,65 +8,80 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Scanner;
+import java.nio.file.StandardOpenOption;
 
 public class WSGenerator  {
 
     public static void main(String[] args) throws IOException {
-        List<String> stream= null;
-        Scanner sc= new Scanner(System.in);
+        List<String> stream= null, puzzle, solution;
+        boolean print=true;
+
+        String caminho_out=null;
+        Path path_out=null;
+        int size=0;
+
         try{
-            Path path = Paths.get("wordlist_1.txt");
+            if(args.length==3){
+
+                caminho_out=args[2];
+                print=false;
+            }
+            String caminho=args[0];
+            size=Integer.parseInt(args[1]);
+
+
+            Path path = Paths.get(caminho);
+
+            if (!print)
+                path_out=Paths.get(caminho_out);
+
             stream= Files.readAllLines(path);
+
 
         }catch (FileNotFoundException e){
             System.out.println("File Not Found, the file should be in the project folder");
+            System.exit(1);
 
+        }catch (ArrayIndexOutOfBoundsException a){
+            System.out.println("Pass a valid filename by argument and a size for the puzzle, USAGE: filename size (optional)output_filename");
+            System.exit(1);
         }
 
-        System.out.println(stream);
-        System.out.println("Size of the puzle: ");
-        int n= sc.nextInt();
-        sc.close();
 
-        PuzzleGenerator pg= new PuzzleGenerator(n);
-        for (String line:stream
-                ) {
-            if(checkletter(line)==false){
-                System.out.println("The file cant contain digits");
-                System.exit(1);
+
+
+        PuzzleGenerator pg= new PuzzleGenerator(size, stream);
+
+
+        puzzle=pg.getPuzzle();
+        if(!print){
+            File file= new File(caminho_out);
+            if (file.exists()) {
+                file.delete(); //you might want to check if delete was successfull
             }
 
-            pg.add_list(line);
+            Files.createFile(path_out);
+
         }
 
-        pg.generate();
+        for(String line : puzzle){
+            if(!print){
 
-        //check list
+                Files.write(path_out,(line+"\n").getBytes(),StandardOpenOption.APPEND);
+            }
 
-        /*if(lw.checklist_1()==false){
-            System.out.println("The length of the words in the list must be 3 or more chars");
-            System.exit(1);
+            else
+                System.out.println(line);
         }
 
-        if(lw.checklist_2()==false){
-            System.out.println("The words in the list must be lower case or a mix between lower case and upper case");
-            System.exit(1);
-        }
 
-        if(lw.checklist_3()==false){
-            System.out.println("The words in the list must be alphabetic");
-            System.exit(1);
-        }
 
-        lw.checklist_4();*/
+
+
+
     }
 
-    public static boolean checkletter(String b){
-        if(b.chars().anyMatch(Character::isDigit))
-            return false;
 
-        return true;
-    }
 
 
 

@@ -1,0 +1,4 @@
+list,set
+graph,stack,queue,tree
+joao
+antonio,jose,maria
