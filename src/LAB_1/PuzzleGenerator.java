@@ -1,5 +1,9 @@
 package LAB_1;
 
+<<<<<<< HEAD
+=======
+import sun.dc.pr.PRError;
+>>>>>>> 66e2c46a47981e8d873fc2ad418ee3f37b3a17cf
 
 import java.util.*;
 

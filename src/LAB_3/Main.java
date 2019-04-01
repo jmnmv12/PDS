@@ -76,7 +76,11 @@ public class Main {
                     rua.addUser(options.get(2) + "-" + options.get(3) + " " + options.get(1));
 
                 } catch (ArrayIndexOutOfBoundsException e) {
+<<<<<<< HEAD
                     System.err.println("You must insert a door number   ");
+=======
+                    System.err.println("You must insert a door number");
+>>>>>>> 66e2c46a47981e8d873fc2ad418ee3f37b3a17cf
                 }
             } else if (options.contains("remove")) {
                 rua.Remove(options.get(1));
