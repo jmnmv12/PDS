@@ -1,26 +1,41 @@
 package LAB_1;
 
+
 import java.util.*;
 
 public class PuzzleGenerator {
     private List<String> list_solutions;
     private List<String> puzzle;
     private List<String> listDirections;
+    private List<String> check;
     private int size;
     private static final int[] directions_X=new int[]{0,0,1,-1,1,1,-1,-1};
     private static final int[] directions_Y=new int[]{1,-1,0,0,1,-1,1,-1};
     private String [] directions_name= new String [] {"Right", "Left", "Down", "Up", "DownRight","DownLeft","UpRight","UpLeft"};
     private Map<String, int[]> directions_map;
     private Stack<int []> lastDir;
+    private puzzle pz;
 
-    public PuzzleGenerator( int size) {
+
+    public PuzzleGenerator( int size, List <String> stream) {
         this.list_solutions = new ArrayList<>();
         this.puzzle=new ArrayList<>();
         this.listDirections=new ArrayList<>();
         this.directions_map=new TreeMap<String, int[]>();
         this.lastDir=new Stack<>();
         this.size = size;
-        String placeholder=",";
+
+
+        for (String line:stream
+        ) {
+            if(checkletter(line)==false){
+                System.out.println("The file cant contain digits");
+                System.exit(1);
+            }
+
+            add_list(line);
+        }
+
 
         for(int i=0;i<size;i++){
             this.puzzle.add( new String(new char[this.size]).replace("\0", ";"));
@@ -31,8 +46,25 @@ public class PuzzleGenerator {
             int array1 [] =new int []{directions_X[j],directions_Y[j]};
             this.directions_map.put(directions_name[j],array1);
         }
-        System.out.println(puzzle);
-        System.out.println(directions_map);
+
+        generate();
+        this.check=puzzle;
+
+        for (String line_c: stream
+             ) {
+            this.check.add(line_c);
+        }
+
+
+        //this.pz=new puzzle(check);
+
+    }
+
+    public boolean checkletter(String b){
+        if(b.chars().anyMatch(Character::isDigit))
+            return false;
+
+        return true;
     }
 
     public void add_list(String line){
@@ -48,6 +80,13 @@ public class PuzzleGenerator {
     }
 
 
+    public List<String> getList_solutions() {
+        return list_solutions;
+    }
+
+    public List<String> getPuzzle() {
+        return puzzle;
+    }
 
     public void generate(){
         //first insert the words in the list
@@ -148,10 +187,7 @@ public class PuzzleGenerator {
 
             }
         }
-        for (String line_b:this.puzzle
-                ) {
-            System.out.println(line_b);
-        }
+
     }
 
 

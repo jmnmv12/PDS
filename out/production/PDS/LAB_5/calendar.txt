@@ -1,0 +1,1 @@
+Na implementação da classe java.util.Calendar foram usados padrões de construção com métodos fábrica

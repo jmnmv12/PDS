@@ -8,15 +8,74 @@ import java.util.List;
 public class puzzle {
     private List<String> sopa;
     private List<String> sopa_transposte;
-    private int max_size;
+    List<String> stream= null;
+
     private static final int[] directions_X=new int[]{0,0,1,-1,1,1,-1,-1};
     private static final int[] directions_Y=new int[]{1,-1,0,0,1,-1,1,-1};
+    private String final_output;
 
-    public puzzle(int max_size) {
-        this.max_size = max_size;
+    public puzzle(List <String> stream) {
+        this.stream=stream;
+
         this.sopa= new ArrayList<>();
         this.sopa_transposte= new ArrayList<String>();
+        list_words lw= new list_words();
 
+        //System.out.println(stream);
+        for (String line:stream
+        ) {
+            if(checkletter(line)==false){
+                System.out.println("The file cant contain digits");
+                System.exit(1);
+            }
+
+            if(separate(line) & !line.trim().isEmpty()) add_puzzle(line);
+            else if(!line.trim().isEmpty())
+                lw.add_list(line.trim());
+        }
+        System.out.println(lw.get_list());
+        //check puzzle
+
+        if(checkpuzzle_1()==false){
+            System.out.println("The puzzle must be a square");
+            System.exit(1);
+        }
+        if(checkpuzzle_2()==false){
+            System.out.println("The max size is 60x60");
+
+            System.exit(1);
+        }
+
+        if(checkpuzzle_3()==false){
+            System.out.println("All soup letters must be uppercase");
+
+            System.exit(1);
+        }
+
+        //check list
+
+        if(lw.checklist_1()==false){
+            System.out.println("The length of the words in the list must be 3 or more chars");
+            System.exit(1);
+        }
+
+        if(lw.checklist_2()==false){
+            System.out.println("The words in the list must be lower case or a mix between lower case and upper case");
+            System.exit(1);
+        }
+
+        if(lw.checklist_3()==false){
+            System.out.println("The words in the list must be alphabetic");
+            System.exit(1);
+        }
+
+        lw.checklist_4();
+
+
+        for (String line:lw.get_list()
+        ) {
+            checkpuzzle(line);
+        }
 
 
     }
@@ -26,25 +85,25 @@ public class puzzle {
 
     }
 
-   /* public void cr_transposte (){
-        String temp="";
+    public  boolean checkletter(String b){
+        if(b.chars().anyMatch(Character::isDigit))
+            return false;
 
-        int noOfElementsInList = sopa.get(0).length();
-        for (int i = 0; i < noOfElementsInList; i++) {
+        return true;
+    }
 
-            for (String row : sopa) {
-                temp+=row.charAt(i);
-            }
-            sopa_transposte.add(temp);
-            temp="";
-        }
-    }*/
+    public  boolean separate(String b){
+        return b.matches("[A-Z]+");
+    }
 
     public boolean checkpuzzle_1(){
         int n_lines=sopa.size();
         for (String line:sopa
                 ) {
+            //System.out.println(line.length());
+            //System.out.println(sopa.size());
             if(line.length()!=n_lines)
+
                 return false;
 
         }
@@ -75,87 +134,7 @@ public class puzzle {
         return true;
     }
 
-    //first version of the solution
-    /*public String checkpuzzle_horizontal(List<String> words){
-        int count=0;
-        int index=0;
-        int index_reversed=0;
-        String reversed="";
-        for (String line:words
-                ) {
-            for(int i=line.length();i>0;i--){
-                reversed+=line.charAt(i-1);
-            }
-            for (String line_a: sopa
-                 ) {
-                count++;
-                //left to right
-                index=line_a.indexOf(line.toUpperCase());
-                if (index!=-1){
-                    System.out.println(line+","+line.length()+","+count+","+index+"right");
-                }
 
-                //right to left
-                //System.out.println(reversed);
-                index_reversed=line_a.indexOf(reversed.toUpperCase());
-                if (index_reversed!=-1){
-                    index_reversed=index_reversed+reversed.length();
-                    System.out.println(line+","+reversed.length()+","+count+","+index_reversed+"left");
-                }
-
-
-            }
-            count=0;
-            index=0;
-            index_reversed=0;
-            reversed="";
-        }
-
-
-        return "nothing";
-    }
-
-    public String checkpuzzle_vertical(List<String> words){
-        cr_transposte();
-        int count=0;
-        int index=0;
-        int index_reversed=0;
-        String reversed="";
-        for (String line:words
-                ) {
-            for(int i=line.length();i>0;i--){
-                reversed+=line.charAt(i-1);
-            }
-            for (String line_a: sopa_transposte
-                    ) {
-                count++;
-                //left to right
-                index=line_a.indexOf(line.toUpperCase());
-
-                if (index!=-1){
-                    int local_index=index+1;
-                    System.out.println(line+","+line.length()+","+local_index+","+count+"down");
-                }
-
-                //right to left
-                //System.out.println(reversed);
-                index_reversed=line_a.indexOf(reversed.toUpperCase());
-                if (index_reversed!=-1){
-                    index_reversed=index_reversed+reversed.length();
-                    System.out.println(line+","+reversed.length()+","+index_reversed+","+count+"up");
-                }
-
-
-            }
-            count=0;
-            index=0;
-            index_reversed=0;
-            reversed="";
-        }
-
-
-        return "nothing";
-    }*/
 
 
     public void checkpuzzle(String line){
@@ -252,7 +231,7 @@ public class puzzle {
                     System.out.println("The word can only appear once in the puzzle");
                     System.exit(1);
                 }
-                System.out.format("%-10s %-3d %d,%d %-10s \n",word.toUpperCase(),word.length(),final_x,final_y,direction);
+                this.final_output+=String.format("%-10s %-3d %d,%-5d %-13s \n",word.toUpperCase(),word.length(),final_x,final_y,direction);
 
                 found=true;
                 break;
@@ -263,7 +242,9 @@ public class puzzle {
         return found;
     }
 
-    //TO-DO check if all words are in the puzzle and just once
+    public void print_output(){
+        System.out.println(this.final_output.replace("null",""));
+    }
 
 
 

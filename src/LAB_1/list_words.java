@@ -10,6 +10,8 @@ public class list_words {
 
     public list_words() {
         this.list_solutions=new ArrayList<>();
+
+
     }
 
     public void add_list(String line){
@@ -98,5 +100,6 @@ public class list_words {
 
 
     }
+
 
 }
