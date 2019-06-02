@@ -31,8 +31,9 @@ public class TxtStorage implements  ContactsStorageInterface  {
 
     @Override
     public List<Contact> loadContacts() {
-        String temp,name, email,finalSt;
+        String temp,name, email;
         int num;
+
 
         try{
             List contents=Files.readAllLines(p1);

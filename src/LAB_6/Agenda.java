@@ -15,22 +15,36 @@ public class Agenda implements ContactsInterface {
 
     @Override
     public boolean add(Contact contact) {
-        return false;
+        String name=contact.getName();
+        table.put(name,contact);
+        return true;
+
+
+
     }
 
     @Override
     public boolean exist(Contact contact) {
-        return false;
+        String name=contact.getName();
+        if(table.get(name)==null)
+            return false;
+        else
+            return true;
     }
 
     @Override
     public boolean remove(Contact contact) {
-        return false;
+        String name=contact.getName();
+        if(table.remove(name)==null)
+            return false;
+        else
+            return true;
     }
 
     @Override
     public Contact getByName(String name) {
-        return null;
+            return table.get(name);
+
     }
 
     @Override
@@ -47,11 +61,13 @@ public class Agenda implements ContactsInterface {
 
     @Override
     public void saveAndClose() {
-
+        List<Contact> list=new ArrayList<>(table.values());
+        defaultStorage.saveContacts(list);
     }
 
     @Override
     public void saveAndClose(ContactsStorageInterface store) {
-
+        List<Contact> list=new ArrayList<>(table.values());
+        store.saveContacts(list);
     }
 }
