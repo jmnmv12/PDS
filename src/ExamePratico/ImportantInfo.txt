@@ -1,0 +1,25 @@
+////Save to txt////
+Path p=Paths.get(filename)
+Files.write(path,to_save.getBytes(), StandardOpenOption.APPEND);
+
+////load from txt////
+Files.readAllines(path)
+
+//save to binary///
+ObjectOutputStream os=null;
+FileOutputStream fileOS= new FileOutputStream(stringPath);
+is= new ObjectInputStream(fileIS);
+is.writeObject()
+
+//load from binary///
+ObjectInputStream oi;
+FileInputStream fileIS= new FileInputStream(stringPath);
+is= new ObjectInputStream(fileIS);
+tempList=(List<Contact>)is.readObject();
+
+
+
+
+
+
+

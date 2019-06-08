@@ -1,16 +1,15 @@
-package LAB_6;
+package ExamePratico.Aula6;
 
-import java.io.Serializable;
+public class NullContact {
 
-public class Contact implements Serializable {
     private String name;
     private int number;
     private String email;
 
-    public Contact(String name, int number, String email) {
-        this.name = name;
-        this.number = number;
-        this.email = email;
+    public NullContact() {
+        this.name = "";
+        this.number = 0;
+        this.email = "";
     }
 
     public String getName() {
