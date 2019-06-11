@@ -17,6 +17,9 @@ FileInputStream fileIS= new FileInputStream(stringPath);
 is= new ObjectInputStream(fileIS);
 tempList=(List<Contact>)is.readObject();
 
+//get real File path
+System.out.println(new File(".").getCanonicalPath());
+
 
 
 
